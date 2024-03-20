@@ -33,7 +33,7 @@ class UserServiceTest extends TestCase
         $request = new Request();
         $request->merge([
             'name' => $user['name'],
-            'email' => $user['email'], 
+            'email' => $user['email'],
             'password' => $user['password']
         ]);
 
@@ -42,8 +42,34 @@ class UserServiceTest extends TestCase
         $userService = new UserService($userRepository);
         $userCreated = $userService->createUser($request);
 
-        $this->assertInstanceOf(User::class, $userCreated); 
-        $this->assertEquals($request->input('name'), $userCreated->name); 
-        $this->assertEquals($request->input('email'), $userCreated->email); 
+        $this->assertInstanceOf(User::class, $userCreated);
+        $this->assertEquals($request->input('name'), $userCreated->name);
+        $this->assertEquals($request->input('email'), $userCreated->email);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function test_login_service(): void
+    {
+        $password = '1234567';
+        $user = User::factory()->create([
+            'password' => $password
+        ]);
+        $request = new Request();
+        $request->merge([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => $password
+        ]);
+
+        $userRepository = new UserRepository(new User());
+
+        $userService = new UserService($userRepository);
+
+        $token = $userService->login($request);
+
+        $this->assertNotEmpty($token);
+        $this->assertIsString($token);
     }
 }
