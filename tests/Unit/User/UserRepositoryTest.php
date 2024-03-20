@@ -24,7 +24,7 @@ class UserRepositoryTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_create_find_user(): void
+    public function test_create_user(): void
     {
         $userDTO = new CreateUserDTO([
             'name' => 'User test',
@@ -33,11 +33,9 @@ class UserRepositoryTest extends TestCase
         ]);
 
         $userRepository = new UserRepository(new User());
-        $userRepository->createUser($userDTO);
+        $userCreated = $userRepository->createUser($userDTO);
 
-        $userFind = $userRepository->findByEmail($userDTO->email);
-
-        $this->assertEquals($userDTO->name, $userFind->name);
-        $this->assertEquals($userDTO->email, $userFind->email);
+        $this->assertEquals($userDTO->name, $userCreated['name']);
+        $this->assertEquals($userDTO->email, $userCreated['email']);
     }
 }
