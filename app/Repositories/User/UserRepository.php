@@ -28,8 +28,8 @@ class UserRepository implements UserRepositoryInterface {
      * @param User $user
      * @return void
      */
-    public function createUser(CreateUserDTO $user): void
+    public function createUser(CreateUserDTO $user): User
     {
-        $this->model->create($user->toArray());
+        return $this->model->create($user->toArray());
     }
 }
