@@ -5,6 +5,7 @@ namespace App\Repositories\User;
 use App\DTOs\User\UserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class UserRepository implements UserRepositoryInterface {
 
@@ -37,7 +38,7 @@ class UserRepository implements UserRepositoryInterface {
      * @param User $user
      * @return string
      */
-    public function createToken(User $user): string
+    public function createToken(Authenticatable $user): string
     {
         return $user->createToken('api_token')->plainTextToken;
     }
