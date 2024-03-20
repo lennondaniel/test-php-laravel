@@ -26,7 +26,7 @@ class UserRepository implements UserRepositoryInterface {
 
     /**
      * @param User $user
-     * @return void
+     * @return User
      */
     public function createUser(UserDTO $user): User
     {
