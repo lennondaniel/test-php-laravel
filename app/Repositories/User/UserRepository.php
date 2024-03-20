@@ -2,7 +2,7 @@
 
 namespace App\Repositories\User;
 
-use App\DTOs\User\CreateUserDTO;
+use App\DTOs\User\UserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 
@@ -28,7 +28,7 @@ class UserRepository implements UserRepositoryInterface {
      * @param User $user
      * @return void
      */
-    public function createUser(CreateUserDTO $user): User
+    public function createUser(UserDTO $user): User
     {
         return $this->model->create($user->toArray());
     }

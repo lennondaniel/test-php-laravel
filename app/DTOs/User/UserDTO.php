@@ -7,7 +7,7 @@ use WendellAdriel\ValidatedDTO\Concerns\EmptyCasts;
 use WendellAdriel\ValidatedDTO\Concerns\EmptyDefaults;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
-class CreateUserDTO extends ValidatedDTO
+class UserDTO extends ValidatedDTO
 {
     use EmptyDefaults, EmptyCasts;
 
