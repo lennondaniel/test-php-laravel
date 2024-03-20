@@ -32,4 +32,13 @@ class UserRepository implements UserRepositoryInterface {
     {
         return $this->model->create($user->toArray());
     }
+
+    /**
+     * @param User $user
+     * @return string
+     */
+    public function createToken(User $user): string
+    {
+        return $user->createToken('api_token')->plainTextToken;
+    }
 }
