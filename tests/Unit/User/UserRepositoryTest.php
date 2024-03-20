@@ -35,8 +35,28 @@ class UserRepositoryTest extends TestCase
         $userRepository = new UserRepository(new User());
         $userCreated = $userRepository->createUser($userDTO);
 
-        $this->assertInstanceOf(User::class, $userCreated); 
+        $this->assertInstanceOf(User::class, $userCreated);
         $this->assertEquals($userDTO->name, $userCreated['name']);
         $this->assertEquals($userDTO->email, $userCreated['email']);
     }
+
+    public function test_create_token_repository(): void
+    {
+        $user = User::factory()->make();
+        $userDTO = new UserDTO([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => $user['password']
+        ]);
+
+        $userRepository = new UserRepository(new User());
+        $userCreated = $userRepository->createUser($userDTO);
+
+        $token = $userRepository->createToken($userCreated);
+
+        $this->assertNotEmpty($token);
+        $this->assertIsString($token);
+    }
+
+
 }
