@@ -27,7 +27,6 @@ class UserDTO extends ValidatedDTO
                     ->mixedCase()
                     ->letters()
                     ->numbers()
-                    ->symbols()
                     ->uncompromised(),
             ],
         ];
