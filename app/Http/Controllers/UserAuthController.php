@@ -13,11 +13,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UserAuthController extends Controller
 {
     private UserServiceInterface $userService;
+
+    /**
+     * @param UserServiceInterface $userService
+     */
     public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }
-    public function register(Request $request)
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function register(Request $request): JsonResponse
     {
         try {
             $user = $this->userService->createUser($request);
@@ -43,7 +52,11 @@ class UserAuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function login(Request $request): JsonResponse
     {
         try {
             $token = $this->userService->login($request);
