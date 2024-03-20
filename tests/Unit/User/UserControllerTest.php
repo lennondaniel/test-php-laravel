@@ -68,4 +68,54 @@ class UserControllerTest extends TestCase
         $this->assertEquals('error', $apiContent->status);
         $this->assertObjectHasProperty('message', $apiContent);
     }
+
+    public function test_login_success(): void
+    {
+        $password = '1234567';
+        $user = User::factory()->create([
+            'password' => $password
+        ]);
+        $request = new Request();
+        $request->merge([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => $password
+        ]);
+
+        $userModel = new User();
+        $userRepository = new UserRepository($userModel);
+        $userService = new UserService($userRepository);
+        $userController = new UserAuthController($userService) ;
+        $apiResponse = $userController->login($request);
+        $apiContent = json_decode($apiResponse->getContent());
+
+        $this->assertEquals(200, $apiResponse->getStatusCode());
+        $this->assertEquals('success', $apiContent->status);
+        $this->assertObjectHasProperty('token', $apiContent->data);
+    }
+
+    public function test_login_invalid_credentials(): void
+    {
+        $password = '1234567';
+        $user = User::factory()->create([
+            'password' => $password
+        ]);
+        $request = new Request();
+        $request->merge([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => '12345'
+        ]);
+
+        $userModel = new User();
+        $userRepository = new UserRepository($userModel);
+        $userService = new UserService($userRepository);
+        $userController = new UserAuthController($userService) ;
+        $apiResponse = $userController->login($request);
+        $apiContent = json_decode($apiResponse->getContent());
+
+        $this->assertEquals(401, $apiResponse->getStatusCode());
+        $this->assertEquals('error', $apiContent->status);
+        $this->assertEquals('Invalid credentials', $apiContent->message);
+    }
 }
