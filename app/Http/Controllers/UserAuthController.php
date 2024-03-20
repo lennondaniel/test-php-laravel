@@ -41,6 +41,34 @@ class UserAuthController extends Controller
                 $statusCode
             );
         }
-
     }
+
+    public function login(Request $request)
+    {
+        try {
+            $token = $this->userService->login($request);
+            $statusCode = Response::HTTP_OK;
+            return new JsonResponse(
+                [
+                    'status' => 'success',
+                    'code' => $statusCode,
+                    'data' => [
+                        'token' => $token
+                    ]
+                ],
+                $statusCode
+            );
+        } catch (Exception $e) {
+            $statusCode = Response::HTTP_UNAUTHORIZED;
+            return new JsonResponse(
+                [
+                    'status' => 'error',
+                    'code' => $statusCode,
+                    'message' => $e->getMessage()
+                ],
+                $statusCode
+            );
+        }
+    }
+
 }
