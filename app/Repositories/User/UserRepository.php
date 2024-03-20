@@ -21,7 +21,7 @@ class UserRepository implements UserRepositoryInterface {
      */
     public function findByEmail(string $email): User
     {
-        return User::find([]);
+        return $this->model->where('email', $email)->first();
     }
 
     /**
