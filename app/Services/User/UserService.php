@@ -28,13 +28,8 @@ class UserService implements UserServiceInterface {
      */
     public function createUser(Request $request): User
     {
-        try {
-            $user = $request->all();
-            $userDto = new UserDTO($user);
-            return $this->userRepository->createUser($userDto);
-        } catch (Exception $e) {
-            throw new Exception('Failed create user: '. $e->getMessage());
-        }
+        $user = $request->all();
+        $userDto = new UserDTO($user);
+        return $this->userRepository->createUser($userDto);
     }
-
 }
