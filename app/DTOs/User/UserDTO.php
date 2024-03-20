@@ -2,6 +2,7 @@
 
 namespace App\DTOs\User;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use WendellAdriel\ValidatedDTO\Concerns\EmptyCasts;
 use WendellAdriel\ValidatedDTO\Concerns\EmptyDefaults;
@@ -35,7 +36,7 @@ class UserDTO extends ValidatedDTO
     protected function defaults(): array
     {
         return [
-            'password' => bcrypt($this->name),
+            'password' => Hash::make($this->name),
         ];
     }
 }
