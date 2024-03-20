@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserService implements UserServiceInterface {
 
@@ -31,5 +32,26 @@ class UserService implements UserServiceInterface {
         $user = $request->all();
         $userDto = new UserDTO($user);
         return $this->userRepository->createUser($userDto);
+    }
+
+    /**
+     * @param Request $request
+     * @return string|null
+     * @throws Exception
+     */
+    public function login(Request $request): string | null
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            return $this->userRepository->createToken($user);
+        }
+
+        throw new Exception('Invalid credentials');
+
     }
 }

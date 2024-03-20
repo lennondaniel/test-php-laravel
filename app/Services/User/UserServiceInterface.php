@@ -7,4 +7,5 @@ use Illuminate\Http\Request;
 
 interface UserServiceInterface {
     public function createUser(Request $request): User;
+    public function login(Request $request): string | null;
 }
