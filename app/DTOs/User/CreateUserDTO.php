@@ -31,4 +31,11 @@ class CreateUserDTO extends ValidatedDTO
             ],
         ];
     }
+
+    protected function defaults(): array
+    {
+        return [
+            'password' => bcrypt($this->name),
+        ];
+    }
 }
