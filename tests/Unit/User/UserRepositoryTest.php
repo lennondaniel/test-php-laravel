@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\User;
 
-use App\DTOs\User\CreateUserDTO;
+use App\DTOs\User\UserDTO;
 use App\Models\User;
 use App\Repositories\User\UserRepository;
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,20 +22,20 @@ class UserRepositoryTest extends TestCase
     {
         parent::tearDown();
     }
-    /**
-     * A basic test example.
-     */
-    public function test_create_user(): void
+
+    public function test_create_user_repository(): void
     {
-        $userDTO = new CreateUserDTO([
-            'name' => 'User test',
-            'email' => 'user@tes.com', 
-            'password' => 's3CreT!@1a2B'
+        $user = User::factory()->make();
+        $userDTO = new UserDTO([
+            'name' => $user['name'],
+            'email' => $user['email'],
+            'password' => $user['password']
         ]);
 
         $userRepository = new UserRepository(new User());
         $userCreated = $userRepository->createUser($userDTO);
 
+        $this->assertInstanceOf(User::class, $userCreated); 
         $this->assertEquals($userDTO->name, $userCreated['name']);
         $this->assertEquals($userDTO->email, $userCreated['email']);
     }
