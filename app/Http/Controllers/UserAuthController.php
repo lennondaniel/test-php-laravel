@@ -21,16 +21,24 @@ class UserAuthController extends Controller
     {
         try {
             $user = $this->userService->createUser($request);
-            return new JsonResponse(
-                $user,
-                Response::HTTP_CREATED
-            );
-        } catch (Exception $e) {
+            $statusCode = Response::HTTP_CREATED;
             return new JsonResponse(
                 [
+                    'status' => 'success',
+                    'code' => $statusCode,
+                    'data' => $user
+                ],
+                $statusCode
+            );
+        } catch (Exception $e) {
+            $statusCode = Response::HTTP_BAD_REQUEST;
+            return new JsonResponse(
+                [
+                    'status' => 'error',
+                    'code' => $statusCode,
                     'message' => $e->getMessage()
                 ],
-                Response::HTTP_BAD_REQUEST
+                $statusCode
             );
         }
 
