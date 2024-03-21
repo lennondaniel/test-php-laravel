@@ -12,10 +12,10 @@ class WeatherDTO extends ValidatedDTO
 {
     use EmptyDefaults, EmptyCasts;
 
-    private string $city;
-    private float $lat;
-    private float $lon;
-    private object $data_weather;
+    public string $city;
+    public float $lat;
+    public float $lon;
+    public array $data_weather;
 
     /**
      * @return array
