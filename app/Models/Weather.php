@@ -32,4 +32,9 @@ class Weather extends Model
     protected $casts = [
         'data_weather' => 'array'
     ];
+
+    public function setCityAttribute($value): void
+    {
+        $this->attributes['city'] = strtolower($value);
+    }
 }
