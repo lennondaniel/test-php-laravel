@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use WendellAdriel\ValidatedDTO\Exceptions\CastTargetException;
 use WendellAdriel\ValidatedDTO\Exceptions\MissingCastTypeException;
+use Illuminate\Support\Collection as SupportCollection;
 
 class WeatherRepositoryTest extends TestCase
 {
@@ -53,9 +54,18 @@ class WeatherRepositoryTest extends TestCase
         $weatherArray = $weatherFactory->toArray();
         $weatherRepository = new WeatherRepository(new Weather());
         $weathers = $weatherRepository->getAll($weatherArray[0]['city']);
-
-        $this->assertInstanceOf(Builder::class, $weathers);
+        $this->assertInstanceOf(SupportCollection::class, $weathers);
         $this->assertEquals(1, $weathers->count());
+    }
+
+    public function test_find_weather_by_city_weather_repository(): void
+    {
+        $weatherFactory = Weather::factory(3)->create();
+        $weatherArray = $weatherFactory->toArray();
+        $weatherRepository = new WeatherRepository(new Weather());
+        $weather = $weatherRepository->findByCity($weatherArray[0]['city']);
+        $this->assertInstanceOf(Weather::class, $weather);
+        $this->assertEquals($weatherArray[0]['city'], $weather['city']);
     }
 
     /**
