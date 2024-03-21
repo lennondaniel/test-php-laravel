@@ -26,6 +26,9 @@ class UserControllerTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @return void
+     */
     public function test_create_user_success(): void
     {
         $user = User::factory()->make();
@@ -48,6 +51,9 @@ class UserControllerTest extends TestCase
         $this->assertEquals($request->input('email'), $apiContent->data->email);
     }
 
+    /**
+     * @return void
+     */
     public function test_create_user_error(): void
     {
         $user = User::factory()->make();

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\User\UserService;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\Request;
@@ -26,7 +27,10 @@ class UserServiceTest extends TestCase
         parent::tearDown();
     }
 
-
+    /**
+     * @return void
+     * @throws Exception
+     */
     public function test_create_user_service(): void
     {
         $user = User::factory()->make();
@@ -48,7 +52,7 @@ class UserServiceTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function test_login_service(): void
     {
