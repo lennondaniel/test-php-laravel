@@ -11,10 +11,25 @@ class Weather extends Model
     use HasFactory, HasUuids;
 
     protected $table = 'weather';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'city',
         'lat',
         'lon',
         'data_weather'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'data_weather' => 'array'
     ];
 }
