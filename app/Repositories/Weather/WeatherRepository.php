@@ -5,6 +5,7 @@ namespace App\Repositories\Weather;
 
 use App\DTOs\Weather\WeatherDTO;
 use App\Models\Weather;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class WeatherRepository implements WeatherRepositoryInterface
@@ -18,9 +19,9 @@ class WeatherRepository implements WeatherRepositoryInterface
 
     /**
      * @param string $filterCity
-     * @return Collection
+     * @return Collection|Builder
      */
-    public function getAll(string $filterCity = ''): Collection
+    public function getAll(string $filterCity = ''): Collection|Builder
     {
         if(empty($filterCity)){
             return $this->model->all();
@@ -31,11 +32,11 @@ class WeatherRepository implements WeatherRepositoryInterface
 
     /**
      * @param WeatherDTO $weatherDTO
-     * @return void
+     * @return Weather
      */
-    public function create(WeatherDTO $weatherDTO): void
+    public function create(WeatherDTO $weatherDTO): Weather
     {
-        $this->model->create($weatherDTO->toArray());
+        return $this->model->create($weatherDTO->toArray());
     }
 
     /**
@@ -50,9 +51,9 @@ class WeatherRepository implements WeatherRepositoryInterface
     /**
      * @param string $id
      * @param WeatherDTO $weatherDTO
-     * @return void
+     * @return bool
      */
-    public function update(string $id, WeatherDTO $weatherDTO): void
+    public function update(string $id, WeatherDTO $weatherDTO): bool
     {
         $weatherArray = $weatherDTO->toArray();
         $weather = $this->model->find($id);
@@ -61,15 +62,15 @@ class WeatherRepository implements WeatherRepositoryInterface
         $weather->lon = $weatherArray['lon'];
         $weather->data_weather = $weatherArray['data_weather'];
 
-        $weather->save();
+        return $weather->save();
     }
 
     /**
      * @param string $id
-     * @return void
+     * @return bool
      */
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
-        $this->model->destroy($id);
+        return $this->model->destroy($id);
     }
 }
