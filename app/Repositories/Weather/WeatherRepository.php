@@ -7,14 +7,20 @@ use App\DTOs\Weather\WeatherDTO;
 use App\Models\Weather;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection as CollectionSupport;
 
 class WeatherRepository implements WeatherRepositoryInterface
 {
     private Weather $model;
+    private QueryBuilder $query;
 
     public function __construct(Weather $model)
     {
         $this->model = $model;
+        $this->query = DB::table('weather');
     }
 
     /**
@@ -27,7 +33,16 @@ class WeatherRepository implements WeatherRepositoryInterface
             return $this->model->all();
         }
 
-        return $this->model->where('city', $filterCity);
+        return $this->model->where('city', strtolower($filterCity))->get();
+    }
+
+    /**
+     * @param string $city
+     * @return Model|null
+     */
+    public function findByCity(string $city): Model|null
+    {
+        return $this->model->where('city', strtolower($city))->first();
     }
 
     /**
