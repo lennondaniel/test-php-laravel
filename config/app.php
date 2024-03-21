@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 
 return [
 
+    'openWeatherApiKey' => env('OPEN_WEATHER_API_KEY', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -169,6 +171,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\OpenWeatherServiceProvider::class,
     ])->toArray(),
 
     /*
