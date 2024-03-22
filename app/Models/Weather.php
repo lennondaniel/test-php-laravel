@@ -30,7 +30,9 @@ class Weather extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'data_weather' => 'array'
+        'data_weather' => 'array',
+        'lat' => 'float',
+        'lon' => 'float'
     ];
 
     public function setCityAttribute($value): void

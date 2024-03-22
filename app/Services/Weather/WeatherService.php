@@ -83,7 +83,7 @@ class WeatherService implements WeatherServiceInterface
         bool $isSaved = false,
         string $city = '',
         Model $weather = null)
-    : array
+    : mixed
     {
         if(!$isSaved) {
             $cityData = $this->openWeatherService->getGeocodingByCity($city);

@@ -19,7 +19,7 @@ interface WeatherServiceInterface
         bool $isSaved = false,
         string $city = '',
         Model $weather = null
-    ): array;
+    ): mixed;
     public function show(string $id): Weather;
     public function update(string $id, Request $request): bool;
     public function delete(string $id): bool;

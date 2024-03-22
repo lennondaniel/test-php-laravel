@@ -6,6 +6,7 @@ use App\Services\User\UserServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nette\Schema\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserAuthController extends Controller
@@ -37,15 +38,14 @@ class UserAuthController extends Controller
                 ],
                 $statusCode
             );
-        } catch (Exception $e) {
-            $statusCode = Response::HTTP_BAD_REQUEST;
+        } catch (ValidationException $e) {
             return new JsonResponse(
                 [
                     'status' => 'error',
-                    'code' => $statusCode,
-                    'message' => $e->getMessage()
+                    'code' => $e->getCode(),
+                    'errors' => $e->getMessages()
                 ],
-                $statusCode
+                $e->getCode()
             );
         }
     }
