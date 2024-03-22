@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ApiSuccessResource;
-use App\Http\Responses\ApiErrorResource;
 use App\Services\User\UserServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
