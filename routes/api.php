@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WeatherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserAuthController;
@@ -21,3 +22,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/users/register', [UserAuthController::class, 'register']);
 Route::post('/users/login', [UserAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->get(
+    '/admin/weather', [WeatherController::class, 'index']
+);
+Route::middleware('auth:sanctum')->get(
+    '/weather/{city}', [WeatherController::class, 'getWeatherByCity']
+);
+Route::middleware('auth:sanctum')->get(
+    '/admin/weather/{id}', [WeatherController::class, 'show']
+);
+Route::middleware('auth:sanctum')->put(
+    '/admin/weather/{id}', [WeatherController::class, 'update']
+);
+Route::middleware('auth:sanctum')->delete(
+    '/admin/weather/{id}', [WeatherController::class, 'delete']
+);
