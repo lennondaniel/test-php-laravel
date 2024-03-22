@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface WeatherServiceInterface
 {
-    public function getAll(string $filter = ''): Collection;
+    public function getAll(Request $request): Collection;
     public function createOrUpdate(string $city): Weather;
     public function getWeatherOpenWeather(
         bool $isSaved = false,

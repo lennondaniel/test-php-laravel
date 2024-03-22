@@ -27,11 +27,12 @@ class WeatherService implements WeatherServiceInterface
     }
 
     /**
-     * @param string $filter
+     * @param Request $request
      * @return Collection
      */
-    public function getAll(string $filter = ''): Collection
+    public function getAll(Request $request): Collection
     {
+        $filter = $request->query('filter') ?? '';
         return $this->weatherRepository->getAll($filter);
     }
 
