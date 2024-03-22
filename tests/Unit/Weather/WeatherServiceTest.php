@@ -35,11 +35,12 @@ class WeatherServiceTest extends TestCase
     function test_get_all_weather_service()
     {
         Weather::factory(3)->create();
+        $request = Request::create('https://test.com');
         $weatherRepository = new WeatherRepository(new Weather());
         $openWeatherService = new OpenWeatherService(new Client());
 
         $weatherService = new WeatherService($weatherRepository, $openWeatherService);
-        $weathers = $weatherService->getAll();
+        $weathers = $weatherService->getAll($request);
 
         $this->assertInstanceOf(Collection::class, $weathers);
         $this->assertEquals(3, $weathers->count());
@@ -52,11 +53,13 @@ class WeatherServiceTest extends TestCase
     {
         $weatherFactory = Weather::factory(3)->create();
         $weatherFactoryArray = $weatherFactory->toArray();
+        $request = Request::create('https://test.com?filter='. $weatherFactoryArray[0]['city']);
+
         $weatherRepository = new WeatherRepository(new Weather());
         $openWeatherService = new OpenWeatherService(new Client());
 
         $weatherService = new WeatherService($weatherRepository, $openWeatherService);
-        $weathers = $weatherService->getAll($weatherFactoryArray[0]['city']);
+        $weathers = $weatherService->getAll($request);
 
         $this->assertInstanceOf(Collection::class, $weathers);
         $this->assertEquals(1, $weathers->count());
