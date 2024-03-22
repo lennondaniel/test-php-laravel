@@ -20,20 +20,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/users/register', [UserAuthController::class, 'register']);
-Route::post('/users/login', [UserAuthController::class, 'login']);
+Route::post('/users/register', [UserAuthController::class, 'register'])->name('register');
+Route::post('/users/login', [UserAuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->get(
     '/admin/weather', [WeatherController::class, 'index']
-);
+)->name('getAllWeather');
 Route::middleware('auth:sanctum')->get(
     '/weather/{city}', [WeatherController::class, 'getWeatherByCity']
-);
+)->name('getWeatherByCity');
 Route::middleware('auth:sanctum')->get(
     '/admin/weather/{id}', [WeatherController::class, 'show']
-);
+)->name('findByIdWeather');
 Route::middleware('auth:sanctum')->put(
     '/admin/weather/{id}', [WeatherController::class, 'update']
-);
+)->name('updateWeather');
 Route::middleware('auth:sanctum')->delete(
     '/admin/weather/{id}', [WeatherController::class, 'delete']
-);
+)->name('deleteWeather');

@@ -1,43 +1,39 @@
-FROM php:8.2-fpm
+FROM php:8.2-fpm-alpine
 
-ARG user
-ARG uid
+RUN apk --update add wget \
+  curl \
+  git \
+  grep \
+  build-base \
+  libmcrypt-dev \
+  libxml2-dev \
+  imagemagick-dev \
+  pcre-dev \
+  libtool \
+  make \
+  autoconf \
+  g++ \
+  cyrus-sasl-dev \
+  libgsasl-dev \
+  supervisor \
+  libpq-dev
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libonig-dev \
-    libpq-dev \
-    postgresql-client \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
-    libzip-dev
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-install pdo pdo_pgsql xml
+RUN pecl channel-update pecl.php.net \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick pdo_pgsql
 
-RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl
-RUN docker-php-ext-enable pdo_pgsql
+# I recommend being explicit with node version here...
+# but we'll see if livewire complains
+RUN apk add --update nodejs \
+    && apk add --update npm
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN rm /var/cache/apk/* && \
+    mkdir -p /var/www
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user && \
-    chown -R $user:$user /var/www
+COPY ./dev/docker-compose/php/supervisord-app.conf /etc/supervisord.conf
 
-WORKDIR /var/www
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
 
-COPY . /var/www
-USER $user
-
-ENTRYPOINT ["/bin/sh","/var/www/start.sh" ]
-
-CMD ["php-fpm"]

@@ -10,7 +10,7 @@ use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class UserDTO extends ValidatedDTO
 {
-    use EmptyCasts;
+    use EmptyCasts, EmptyDefaults;
 
     public string $name;
     public string $email;
@@ -29,13 +29,6 @@ class UserDTO extends ValidatedDTO
                     ->numbers()
                     ->uncompromised(),
             ],
-        ];
-    }
-
-    protected function defaults(): array
-    {
-        return [
-            'password' => Hash::make($this->password),
         ];
     }
 }
